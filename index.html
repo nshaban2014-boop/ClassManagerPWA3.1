@@ -1,0 +1,232 @@
+<!doctype html>
+<html lang="fa" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#5266a8">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="style.css">
+<title>مدیریت کلاس مفید</title>
+</head>
+<body>
+<div id="offlineBadge" class="offline-badge hidden">حالت آفلاین</div>
+<header class="topbar">
+  <div class="brand"><div class="brand-icon" role="img" aria-label="لوگوی مدیریت کلاس مفید"><img src="icon.svg" alt="" aria-hidden="true"></div>
+  <div><h1>مدیریت کلاس مفید</h1><p>دفتر هوشمند معلم · آفلاین</p></div></div>
+  <button id="installBtn" class="btn btn-light hidden">نصب برنامه</button>
+</header>
+<div class="app-shell">
+<nav class="tabs" aria-label="منوی اصلی">
+  <button class="tab active" data-page="dashboard">نمای کلی</button>
+  <button class="tab" data-page="students">دانش‌آموزان</button>
+  <button class="tab" data-page="attendance">حضور و غیاب</button>
+  <button class="tab" data-page="grades">نمره آزمون‌ها</button>
+  <button class="tab" data-page="positive">نمره مثبت</button>
+  <button class="tab" data-page="negative">نمره منفی</button>
+  <button class="tab" data-page="homework">تکالیف</button>
+  <button class="tab" data-page="timetable">برنامه هفتگی</button>
+  <button class="tab" data-page="reports">گزارش‌ها</button>
+  <button class="tab" data-page="settings">تنظیمات</button>
+</nav>
+<main id="main" tabindex="-1">
+<section class="page active" id="page-dashboard">
+  <div class="welcome"><div><span class="eyebrow">مدیریت کلاس مفید</span>
+  <h2>به برنامهٔ مدیریت کلاس خودتان خوش آمدید</h2></div>
+  <div class="welcome-mark">✦</div></div>
+  <div class="stats" id="dashboardStats"></div>
+  <div class="panel"><div class="panel-head"><h3>دسترسی سریع</h3></div>
+  <div class="quick-actions">
+  <button class="quick" data-goto="students"><span>＋</span>افزودن دانش‌آموز</button>
+  <button class="quick" data-goto="attendance"><span>✓</span>ثبت حضور و غیاب</button>
+  <button class="quick" data-goto="grades"><span>★</span>ثبت نمره آزمون</button>
+  <button class="quick" data-goto="positive" id="quickPositiveBtn"><span>＋</span>ثبت نمره مثبت</button>
+  <button class="quick quick-negative" id="addNegativeBtn" type="button"><span>−</span>ثبت نمره منفی</button>
+  <button class="quick quick-homework" id="addHomeworkBtn" type="button"><span>✓</span>ثبت وضعیت تکلیف</button>
+  <button class="quick" data-goto="reports"><span>▤</span>گزارش‌ها</button>
+  </div></div>
+  <div class="panel"><h3>امروز</h3><p class="muted" id="todayInfo">—</p></div>
+  <div class="dashboard-notes"><p>اطلاعات شما روی همین دستگاه ذخیره می‌شود.</p><p><strong dir="ltr">Designed and developed by Nima Shaban</strong></p></div>
+</section>
+<section class="page" id="page-classes">
+  <div class="section-heading"><div><span class="eyebrow">سازمان‌دهی</span><h2>کلاس‌ها</h2></div>
+  <button class="btn" id="addClassBtn">＋ کلاس جدید</button></div>
+  <div id="classesList" class="card-list"></div>
+</section>
+<section class="page" id="page-students">
+  <div class="section-heading"><div><span class="eyebrow">فهرست افراد</span><h2>دانش‌آموزان</h2></div>
+  <div class="button-row"><button class="btn btn-outline" data-goto="classes">مدیریت کلاس‌ها</button><button class="btn" id="addStudentBtn">＋ دانش‌آموز جدید</button></div></div>
+  <div class="panel">
+    <div class="panel-head"><h3>افزودن گروهی از اکسل / CSV</h3>
+    <button class="small-btn" id="toggleBulkBtn">نمایش/پنهان</button></div>
+    <div id="bulkArea" class="hidden">
+      <p class="muted">فایل CSV از اکسل را بارگذاری کنید یا سلول‌ها را از اکسل کپی و در کادر زیر بچسبانید.<br>
+      ترتیب ستون‌ها: نام (اجباری) | نام کلاس | شماره دانش‌آموزی | شماره تماس | یادداشت<br>
+      کلاس‌های جدید خودکار ساخته می‌شوند.</p>
+      <div class="button-row" style="margin:10px 0">
+      <label class="btn btn-outline file-label">انتخاب فایل CSV
+      <input id="bulkFile" type="file" accept=".csv,.txt" hidden></label>
+      <button class="btn btn-outline" id="bulkSampleBtn">نمونه قالب</button></div>
+      <textarea id="bulkText" rows="6"></textarea>
+      <div class="button-row" style="margin-top:10px">
+      <button class="btn" id="bulkParseBtn">بررسی و افزودن</button>
+      <button class="btn btn-outline" id="bulkClearBtn">پاک‌کردن</button></div>
+      <div id="bulkPreview" class="muted" style="margin-top:10px"></div>
+    </div>
+  </div>
+  <div class="filters">
+  <input id="studentSearch" placeholder="جست‌وجوی نام یا شماره...">
+  <select id="studentClassFilter"><option value="">همه کلاس‌ها</option></select></div>
+  <div id="studentsList" class="card-list"></div>
+</section>
+<section class="page" id="page-attendance">
+  <div class="section-heading"><div><span class="eyebrow">ثبت روزانه</span><h2>حضور و غیاب</h2></div></div>
+  <div class="panel form-grid">
+  <label>کلاس<select id="attendanceClass"></select></label>
+  <label>تاریخ<input id="attendanceDate" type="date"></label>
+  <button id="loadAttendanceBtn" class="btn">نمایش فهرست</button></div>
+  <p class="muted" id="attendanceDateFa" style="margin:-6px 4px 12px"></p>
+  <div id="attendanceArea" class="panel"><p class="muted">ابتدا کلاس و تاریخ را انتخاب کنید.</p></div>
+</section>
+<section class="page" id="page-grades">
+  <div class="section-heading"><div><span class="eyebrow">ارزشیابی</span><h2>نمره آزمون‌ها</h2></div>
+  <button class="btn" id="addGradeBtn">＋ ثبت نمره</button></div>
+  <div class="panel report-filters">
+    <h3>خروجی اکسل سوابق نمره آزمون‌ها</h3>
+    <p class="muted">سوابق به‌صورت محلی در برنامه نگهداری می‌شوند. برای دریافت همه سوابق، تاریخ‌ها را خالی بگذارید؛ برای گزارش روزانه یک تاریخ یا برای گزارش بازه، تاریخ شروع و پایان را انتخاب کنید.</p>
+    <div class="form-grid">
+      <label>فیلتر کلاس<select id="gradesExportClassFilter"><option value="">همه کلاس‌ها</option></select></label>
+      <label>فیلتر دانش‌آموز<select id="gradesExportStudentFilter"><option value="">همه دانش‌آموزان</option></select></label>
+      <label>از تاریخ<input id="gradesExportDateFrom" type="date"></label>
+      <label>تا تاریخ<input id="gradesExportDateTo" type="date"></label>
+      <button class="btn" id="exportGradesExcelBtn" type="button">دانلود اکسل نمره آزمون‌ها (.xlsx)</button>
+    </div>
+  </div>
+  <div id="gradesList" class="card-list hidden"></div>
+</section>
+<section class="page" id="page-positive">
+  <div class="section-heading"><div><span class="eyebrow">تشویق</span><h2>نمره مثبت</h2></div>
+  <button class="btn" id="addPositiveBtn">＋ ثبت نمره مثبت</button></div>
+  <div class="panel"><p class="muted">امتیازهای مثبت دانش‌آموزان در این بخش ثبت و جمع‌بندی می‌شود.</p>
+  <div id="positiveSummary" class="report-grid" style="margin-top:10px"></div></div>
+  <div class="panel report-filters">
+    <h3>خروجی اکسل سوابق نمره مثبت</h3>
+    <p class="muted">همه سوابق ثبت‌شده در برنامه باقی می‌مانند. برای خروجی کامل، تاریخ‌ها را خالی بگذارید یا با فیلتر کلاس، دانش‌آموز و تاریخ، گزارش دلخواه را بگیرید.</p>
+    <div class="form-grid">
+      <label>فیلتر کلاس<select id="positiveExportClassFilter"><option value="">همه کلاس‌ها</option></select></label>
+      <label>فیلتر دانش‌آموز<select id="positiveExportStudentFilter"><option value="">همه دانش‌آموزان</option></select></label>
+      <label>از تاریخ<input id="positiveExportDateFrom" type="date"></label>
+      <label>تا تاریخ<input id="positiveExportDateTo" type="date"></label>
+      <button class="btn" id="exportPositiveExcelBtn" type="button">دانلود اکسل نمره مثبت (.xlsx)</button>
+    </div>
+  </div>
+  <div id="positivesList" class="card-list hidden"></div>
+</section>
+<section class="page" id="page-negative">
+  <div class="section-heading"><div><span class="eyebrow">انضباط و بازخورد</span><h2>نمره منفی</h2></div>
+  <button class="btn btn-danger" id="addNegativePageBtn">＋ ثبت نمره منفی</button></div>
+  <div class="panel report-filters">
+    <h3>خروجی اکسل سوابق نمره منفی</h3>
+    <p class="muted">برای جلوگیری از طولانی‌شدن صفحه، فهرست ثبت‌ها نمایش داده نمی‌شود؛ سوابق در حافظه محلی برنامه می‌مانند و می‌توانید همه یا بخشی از آن‌ها را به اکسل بگیرید.</p>
+    <div class="form-grid">
+      <label>فیلتر کلاس<select id="negativeExportClassFilter"><option value="">همه کلاس‌ها</option></select></label>
+      <label>فیلتر دانش‌آموز<select id="negativeExportStudentFilter"><option value="">همه دانش‌آموزان</option></select></label>
+      <label>از تاریخ<input id="negativeExportDateFrom" type="date"></label>
+      <label>تا تاریخ<input id="negativeExportDateTo" type="date"></label>
+      <button class="btn" id="exportNegativeExcelBtn" type="button">دانلود اکسل نمره منفی (.xlsx)</button>
+    </div>
+  </div>
+  <div id="negativesList" class="card-list hidden"></div>
+</section>
+<section class="page" id="page-homework">
+  <div class="section-heading"><div><span class="eyebrow">پیگیری تکالیف</span><h2>تکالیف</h2></div>
+  <button class="btn" id="addHomeworkPageBtn">＋ ثبت وضعیت تکلیف</button></div>
+  <div class="panel report-filters">
+    <h3>خروجی اکسل سوابق تکالیف</h3>
+    <p class="muted">فهرست طولانی تکالیف در صفحه نمایش داده نمی‌شود. همه اطلاعات در دستگاه ذخیره می‌مانند؛ تاریخ‌ها را خالی بگذارید تا تمام سوابق یا انتخاب کنید تا فقط بخشی از آن‌ها صادر شود.</p>
+    <div class="form-grid">
+      <label>فیلتر کلاس<select id="homeworkExportClassFilter"><option value="">همه کلاس‌ها</option></select></label>
+      <label>فیلتر دانش‌آموز<select id="homeworkExportStudentFilter"><option value="">همه دانش‌آموزان</option></select></label>
+      <label>از تاریخ<input id="homeworkExportDateFrom" type="date"></label>
+      <label>تا تاریخ<input id="homeworkExportDateTo" type="date"></label>
+      <button class="btn" id="exportHomeworkExcelBtn" type="button">دانلود اکسل تکالیف (.xlsx)</button>
+    </div>
+  </div>
+  <div id="homeworkList" class="card-list hidden"></div>
+</section>
+<section class="page" id="page-timetable">
+  <div class="section-heading"><div><span class="eyebrow">برنامه‌ریزی</span><h2>برنامه هفتگی</h2></div>
+  <button class="btn" id="addLessonBtn">＋ افزودن زنگ</button></div>
+  <div id="timetableList" class="card-list"></div>
+</section>
+<section class="page" id="page-reports">
+  <div class="section-heading"><div><span class="eyebrow">خلاصه عملکرد</span><h2>گزارش‌ها</h2></div>
+  <button class="btn btn-outline" id="printReportBtn">چاپ گزارش</button></div>
+  <div class="panel report-filters"><div class="form-grid">
+    <label>فیلتر کلاس<select id="reportClassFilter"><option value="">همه کلاس‌ها</option></select></label>
+    <label>فیلتر دانش‌آموز<select id="reportStudentFilter"><option value="">همه دانش‌آموزان</option></select></label>
+    <label>از تاریخ<input id="reportDateFrom" type="date"><small id="reportDateFromFa" class="muted date-equivalent">معادل شمسی</small></label>
+    <label>تا تاریخ<input id="reportDateTo" type="date"><small id="reportDateToFa" class="muted date-equivalent">معادل شمسی</small></label>
+    <button class="btn" id="exportReportBtn" type="button">خروجی اکسل (CSV)</button>
+  </div><p class="muted">تاریخ را از تقویم انتخاب کنید؛ معادل شمسی نیز نمایش داده می‌شود. خروجی CSV در Excel باز می‌شود.</p></div>
+  <div class="panel report-filters" id="attendanceExportPanel">
+    <h3>خروجی مستقل اکسل — وضعیت حضور و غیاب دانش‌آموزان</h3>
+    <p class="muted">کلاس و دانش‌آموز را انتخاب کنید. برای گزارش روزانه فقط یکی از تاریخ‌ها را انتخاب کنید؛ برای گزارش بازه، تاریخ شروع و پایان را مشخص کنید. اگر هیچ تاریخی انتخاب نشود، همه سوابق ثبت‌شده صادر می‌شوند.</p>
+    <div class="form-grid">
+      <label>کلاس<select id="attendanceExportClassFilter"><option value="">همه کلاس‌ها</option></select></label>
+      <label>دانش‌آموز<select id="attendanceExportStudentFilter"><option value="">همه دانش‌آموزان</option></select></label>
+      <label>از تاریخ<input id="attendanceExportDateFrom" type="date"></label>
+      <label>تا تاریخ<input id="attendanceExportDateTo" type="date"></label>
+      <button class="btn" id="exportAttendanceExcelBtn" type="button">دانلود اکسل حضور و غیاب (.xlsx)</button>
+    </div>
+  </div>
+  <div id="reportContent"></div>
+</section>
+<section class="page" id="page-settings">
+  <div class="section-heading"><div><span class="eyebrow">تنظیمات</span><h2>تنظیمات و پشتیبان</h2></div></div>
+  <div class="panel"><h3>تنظیمات نمایش</h3>
+    <div class="form-grid" style="grid-template-columns:1fr 1fr">
+    <label>تم رنگی<select id="setTheme">
+      <option value="light">روشن</option><option value="dark">تیره</option>
+      <option value="auto">خودکار</option></select></label>
+    <label>فونت فارسی<select id="setFont">
+      <option value="Vazirmatn">وزیرمتن</option><option value="Sahel">ساحل</option>
+      <option value="Samim">صمیم</option><option value="Shabnam">شبنم</option>
+      <option value="Estedad">استعداد</option><option value="Nazanin">نازنین</option>
+      <option value="Tahoma">تاهوما</option><option value="Arial">آریال</option>
+      <option value="system">پیش‌فرض سیستم</option></select></label>
+    <label>اندازه قلم<select id="setFontSize">
+      <option value="13">کوچک</option><option value="14">متوسط</option>
+      <option value="16">بزرگ</option><option value="18">خیلی بزرگ</option></select></label>
+    <label>نوع تقویم<select id="setCalendar">
+      <option value="jalali">شمسی</option>
+      <option value="gregorian">میلادی</option></select></label>
+    </div>
+    <p class="muted" style="margin-top:10px">پیش‌نمایش: <span id="samplePreview">نمونه متن — ۱۲۳۴۵۶۷۸۹۰ مدیریت کلاس</span></p>
+    <p class="muted">فونت‌ها آنلاین بارگذاری می‌شوند؛ در آفلاین فونت پیش‌فرض سیستم استفاده می‌شود.</p>
+    <div class="button-row"><button class="btn btn-outline" id="resetDisplayBtn">بازگردانی پیش‌فرض</button></div>
+  </div>
+  <div class="panel"><h3>پشتیبان‌گیری</h3>
+    <p class="muted">یک فایل JSON از همه داده‌ها بگیرید.</p>
+    <div class="button-row">
+    <button class="btn" id="exportBtn">دریافت فایل پشتیبان</button>
+    <label class="btn btn-outline file-label">بازیابی<input id="importFile" type="file" accept=".json" hidden></label>
+    </div>
+  </div>
+  <div class="panel"><h3>وضعیت</h3><p id="storageInfo" class="muted"></p>
+  <button class="btn btn-danger" id="clearDataBtn">پاک‌کردن همه اطلاعات</button></div>
+</section>
+</main>
+</div>
+<dialog id="itemDialog"><form id="itemForm" novalidate>
+  <div class="dialog-head"><h3 id="dialogTitle">فرم</h3>
+  <button type="button" class="icon-btn" id="closeDialog">×</button></div>
+  <div id="dialogFields" class="dialog-fields"></div>
+  <div class="dialog-actions">
+  <button type="button" class="btn btn-outline" id="cancelDialog">انصراف</button>
+  <button type="submit" class="btn">ذخیره</button></div>
+</form></dialog>
+<div id="toast" role="status" aria-live="polite"></div>
+<footer>مدیریت کلاس مفید · نسخه ۳.۰</footer>
+<script src="app.js"></script>
+</body>
+</html>
